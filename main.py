@@ -62,8 +62,9 @@ def run_attack(count, chain_length, bit_length, r_value):
     index_dict = {table[i][1]: i for i in range(count)}
 
     successes = 0
+    iterations_amount = 10_000
 
-    for _ in range(10_100):
+    for _ in range(iterations_amount):
         random_value = generate_random_hex(256)
         random_hash = get_truncated_hash(random_value.encode(), bit_length)
         result = attack_hash_chain(table, index_dict, random_hash, chain_length, bit_length, r_value)
@@ -71,10 +72,10 @@ def run_attack(count, chain_length, bit_length, r_value):
         if result != PREIMAGE_NOT_FOUND and get_truncated_hash(combine_strings(result, generate_random_hex(128 - bit_length)).encode(), bit_length) == random_hash:
             successes += 1
 
-    success_rate = successes / 10000 if successes > 0 else 0
+    success_rate = successes / iterations_amount
 
     print(f"Success Count: {successes}, Probability: {success_rate}")
-    print(f"Failure Count: {10000 - successes}")
+    print(f"Failure Count: {iterations_amount - successes}")
 
 if __name__ == '__main__':
     chain_count = pow(2, 20)
