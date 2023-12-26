@@ -7,10 +7,10 @@ PREIMAGE_NOT_FOUND = "Pre-image not found"
 
 def get_truncated_hash(data: bytes, n):
     hashed = rhash.hash_msg(data, rhash.HAS160)
-    return hashed[-int(n / 4):]
+    return hashed[-int(n / 8):]
 
 def generate_random_hex(bits):
-    return format(secrets.randbits(bits), f'0{bits // 4}x')
+    return format(secrets.randbits(bits), f'0{bits // 8}x')
 
 def combine_strings(str1, str2):
     return str2 + str1
@@ -78,9 +78,9 @@ def run_attack(count, chain_length, bit_length, r_value):
     print(f"Failure Count: {iterations_amount - successes}")
 
 if __name__ == '__main__':
-    chain_count = pow(2, 20)
-    chain_length = pow(2, 10)
-    bit_length = 32
+    chain_count = pow(2, 10)
+    chain_length = pow(2, 5)
+    bit_length = 16
     r_value = generate_random_hex(128 - bit_length)
     target_hash = get_truncated_hash(generate_random_hex(256).encode(), bit_length)
 
